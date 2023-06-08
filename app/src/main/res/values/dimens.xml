@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Font Size -->
+    <dimen name="main_title">20sp</dimen>
+    <dimen name="main_desc">13sp</dimen>
+    <dimen name="button_text">16sp</dimen>
+    <dimen name="toolbar_font_size">16sp</dimen>
+
+    <!-- Component -->
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="separator_height">1dp</dimen>
+
+    <!-- Padding -->
+    <dimen name="padding_16">16dp</dimen>
+
+</resources>

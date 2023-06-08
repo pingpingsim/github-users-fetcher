@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme color -->
+    <color name="color_on_primary">#3F3441</color>
+    <color name="color_primary">#FAFAFA</color>
+    <color name="color_primary_variant">#F4F4F4</color>
+    <color name="color_secondary">#3F3441</color>
+    <color name="color_on_secondary">#3F3441</color>
+    <color name="splash_bg">#F4F0EF</color>
+
+    <!-- font color -->
+    <color name="header_font">#CC222222</color>
+    <color name="subtitle_font">#80222222</color>
+    <color name="separator">#DBD4CD</color>
+    <color name="screen_bg">#FAFAFA</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

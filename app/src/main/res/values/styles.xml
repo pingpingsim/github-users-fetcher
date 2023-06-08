@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="HeadlineText" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/euclidcircularb_bold</item>
+        <item name="android:textSize">@dimen/main_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontWeight">700</item>
+    </style>
+
+    <style name="SubtitleText" parent="TextAppearance.AppCompat.SearchResult.Subtitle">
+        <item name="fontFamily">@font/euclidcircularb_regular</item>
+        <item name="android:textSize">@dimen/main_desc</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="ButtonText" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/euclidcircularb_bold</item>
+        <item name="android:textSize">@dimen/button_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontWeight">700</item>
+    </style>
+
+    <style name="ShapeAppearance.App.CircleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ToolbarText" parent="TextAppearance.AppCompat.SearchResult.Subtitle">
+        <item name="fontFamily">@font/euclidcircularb_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+</resources>
