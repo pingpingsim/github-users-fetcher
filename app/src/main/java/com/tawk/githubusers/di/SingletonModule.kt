@@ -2,10 +2,7 @@ package com.tawk.githubusers.di
 
 import android.content.Context
 import com.tawk.githubusers.data.local.UserDatabase
-import com.tawk.githubusers.data.local.UserDao
 import com.tawk.githubusers.data.remote.UserApiService
-import com.tawk.githubusers.data.remote.UserRemoteDataSource
-import com.tawk.githubusers.data.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,11 +33,4 @@ class SingletonModule {
     @Provides
     fun provideUserDao(db: UserDatabase) = db.userDao()
 
-    @Singleton
-    @Provides
-    fun provideRepository(
-        remoteDataSource: UserRemoteDataSource,
-        localDataSource: UserDao
-    ) =
-        UserRepository(remoteDataSource, localDataSource)
 }

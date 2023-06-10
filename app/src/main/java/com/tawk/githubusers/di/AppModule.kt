@@ -1,6 +1,5 @@
 package com.tawk.githubusers.di
 
-import com.tawk.githubusers.data.remote.UserRemoteDataSource
 import com.tawk.githubusers.data.remote.UserApiService
 import dagger.Module
 import dagger.Provides
