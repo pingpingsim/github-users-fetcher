@@ -1,21 +1,22 @@
 package com.tawk.githubusers.ui.main
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tawk.githubusers.databinding.ActivityMainBinding
-import com.tawk.githubusers.utils.Resource
+import com.tawk.githubusers.ui.main.adapter.UserLoadStateAdapter
+import com.tawk.githubusers.ui.main.adapter.UsersAdapterPager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), UsersAdapter.UserItemListener {
+class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: UsersAdapter
+    private lateinit var adapter: UsersAdapterPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,25 +27,32 @@ class MainActivity : AppCompatActivity(), UsersAdapter.UserItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = UsersAdapter(this)
+        adapter = UsersAdapterPager(this)
         binding.charactersRv.layoutManager = LinearLayoutManager(this)
-        binding.charactersRv.adapter = adapter
+        binding.charactersRv.adapter =
+            adapter.withLoadStateFooter(footer = UserLoadStateAdapter { adapter.retry() })
     }
 
     private fun setupObservers() {
-        mainViewModel.users.observe(this, Observer {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
-                }
-                Resource.Status.ERROR ->
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-
-                Resource.Status.LOADING ->
-                    binding.progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            mainViewModel.getUsers().collectLatest {
+                adapter.submitData(it)
             }
-        })
+        }
+        
+//        mainViewModel.users.observe(this, Observer {
+//            when (it.status) {
+//                Resource.Status.SUCCESS -> {
+//                    binding.progressBar.visibility = View.GONE
+//                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
+//                }
+//                Resource.Status.ERROR ->
+//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+//
+//                Resource.Status.LOADING ->
+//                    binding.progressBar.visibility = View.VISIBLE
+//            }
+//        })
     }
 
     override fun onClickedUser(characterId: Int) {

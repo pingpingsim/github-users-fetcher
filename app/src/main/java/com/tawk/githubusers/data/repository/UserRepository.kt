@@ -10,9 +10,9 @@ class UserRepository @Inject constructor(
     private val localDataSource: UserDao
 ) {
 
-    fun getUsers() = performGetOperation(
-        databaseQuery = { localDataSource.getAllUsers() },
-        networkCall = { remoteDataSource.getUsers() },
-        saveCallResult = { localDataSource.insertAll(it) }
-    )
+//    fun getUsers(userIdStartIndex: Int) = performGetOperation(
+//        databaseQuery = { localDataSource.getAllUsers() },
+//        networkCall = { remoteDataSource.getUsers(userIdStartIndex) },
+//        saveCallResult = { localDataSource.insertAll(it) }
+//    )
 }

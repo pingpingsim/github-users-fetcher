@@ -7,15 +7,15 @@ import androidx.room.RoomDatabase
 import com.tawk.githubusers.data.entities.User
 
 @Database(entities = [User::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+abstract class UserDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
 
     companion object {
         @Volatile
-        private var instance: AppDatabase? = null
+        private var instance: UserDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase =
+        fun getDatabase(context: Context): UserDatabase =
             instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also {
                     instance = it
@@ -23,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
         private fun buildDatabase(appContext: Context) =
-            Room.databaseBuilder(appContext, AppDatabase::class.java, "users")
+            Room.databaseBuilder(appContext, UserDatabase::class.java, "users")
                 .fallbackToDestructiveMigration()
                 .build()
     }

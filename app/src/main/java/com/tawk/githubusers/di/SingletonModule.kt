@@ -1,7 +1,7 @@
 package com.tawk.githubusers.di
 
 import android.content.Context
-import com.tawk.githubusers.data.local.AppDatabase
+import com.tawk.githubusers.data.local.UserDatabase
 import com.tawk.githubusers.data.local.UserDao
 import com.tawk.githubusers.data.remote.UserApiService
 import com.tawk.githubusers.data.remote.UserRemoteDataSource
@@ -29,17 +29,12 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun provideUserRemoteDataSource(userApiService: UserApiService) =
-        UserRemoteDataSource(userApiService)
-
-    @Singleton
-    @Provides
     fun provideDatabase(@ApplicationContext appContext: Context) =
-        AppDatabase.getDatabase(appContext)
+        UserDatabase.getDatabase(appContext)
 
     @Singleton
     @Provides
-    fun provideUserDao(db: AppDatabase) = db.userDao()
+    fun provideUserDao(db: UserDatabase) = db.userDao()
 
     @Singleton
     @Provides
