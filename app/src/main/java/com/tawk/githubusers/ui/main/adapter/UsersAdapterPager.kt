@@ -58,6 +58,7 @@ class UserViewHolder(
         user = item
         itemBinding.username.text = item?.login
         itemBinding.details.text = item?.notes
+        itemBinding.imgNotes.visibility = if (item?.notes != null) View.VISIBLE else View.GONE
         Glide.with(itemBinding.root)
             .load(item?.avatarUrl)
             .placeholder(R.drawable.placeholder_image)
