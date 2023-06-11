@@ -32,5 +32,4 @@ class SingletonModule {
     @Singleton
     @Provides
     fun provideUserDao(db: UserDatabase) = db.userDao()
-
 }

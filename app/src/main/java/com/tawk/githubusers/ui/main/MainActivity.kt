@@ -1,6 +1,8 @@
 package com.tawk.githubusers.ui.main
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tawk.githubusers.databinding.ActivityMainBinding
 import com.tawk.githubusers.ui.main.adapter.UserLoadStateAdapter
 import com.tawk.githubusers.ui.main.adapter.UsersAdapterPager
+import com.tawk.githubusers.utils.NetworkConnectionManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -17,6 +20,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: UsersAdapterPager
+    private lateinit var networkConnectionManager: NetworkConnectionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +28,35 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         setContentView(binding.root)
         setupRecyclerView()
         setupObservers()
+
+        networkConnectionManager = NetworkConnectionManager(application)
+        networkConnectionManager.observe(this, { isConnected ->
+            when (isConnected) {
+                true -> {//show indicator
+                    binding.rvUsers.visibility = View.VISIBLE
+                    binding.emptyDataView.visibility = View.GONE
+
+                    if (adapter.itemCount == 0) {
+                        adapter.refresh()
+                    }
+                }
+                false -> {//show indicator
+//                    if (adapter.itemCount == 0) {//show empty list view with retry
+//                        binding.emptyDataView.visibility = View.VISIBLE
+//                        binding.rvUsers.visibility = View.GONE
+//                        binding.btnRetry.setOnClickListener(View.OnClickListener { view ->
+//                            adapter.refresh()
+//                        })
+//                    }
+                }
+            }
+        })
     }
 
     private fun setupRecyclerView() {
         adapter = UsersAdapterPager(this)
-        binding.charactersRv.layoutManager = LinearLayoutManager(this)
-        binding.charactersRv.adapter =
+        binding.rvUsers.layoutManager = LinearLayoutManager(this)
+        binding.rvUsers.adapter =
             adapter.withLoadStateFooter(footer = UserLoadStateAdapter { adapter.retry() })
     }
 
@@ -39,20 +66,6 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
                 adapter.submitData(it)
             }
         }
-        
-//        mainViewModel.users.observe(this, Observer {
-//            when (it.status) {
-//                Resource.Status.SUCCESS -> {
-//                    binding.progressBar.visibility = View.GONE
-//                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
-//                }
-//                Resource.Status.ERROR ->
-//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-//
-//                Resource.Status.LOADING ->
-//                    binding.progressBar.visibility = View.VISIBLE
-//            }
-//        })
     }
 
     override fun onClickedUser(characterId: Int) {

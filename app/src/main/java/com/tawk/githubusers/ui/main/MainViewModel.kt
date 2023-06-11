@@ -22,6 +22,7 @@ class MainViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+
     /**
      * A PagingSource still loads the data; but when the paged data is exhausted, the Paging library triggers the RemoteMediator to load new data from the network source.
      * The RemoteMediator stores the new data in the local database, so an in-memory cache in the ViewModel is unnecessary.
@@ -46,5 +47,4 @@ class MainViewModel @Inject constructor(
                 database,
             )
         ).flow
-
 }

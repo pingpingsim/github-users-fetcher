@@ -2,6 +2,7 @@ package com.tawk.githubusers.ui.main.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -14,14 +15,6 @@ import com.tawk.githubusers.databinding.ItemUserBinding
 
 class UsersAdapterPager(private val listener: UserItemListener) :
     PagingDataAdapter<User, UserViewHolder>(REPO_COMPARATOR) {
-  //  private val items = ArrayList<User>()
-
-//    fun setItems(items: ArrayList<User>) {
-//        this.items.clear()
-//        this.items.addAll(items)
-//        notifyDataSetChanged()
-//    }
-
     interface UserItemListener {
         fun onClickedUser(userId: Int)
     }
@@ -42,41 +35,37 @@ class UsersAdapterPager(private val listener: UserItemListener) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-//        val binding: ItemUserBinding =
-//            ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        return UserViewHolder(binding, listener)
-        return UserViewHolder(parent)
+        return UserViewHolder(parent, listener)
     }
-
-//    override fun getItemCount(): Int = items.size
 }
 
 class UserViewHolder(
     parent: ViewGroup,
-) : RecyclerView.ViewHolder( LayoutInflater.from(parent.context)
-    .inflate(R.layout.item_user, parent, false))
-   {// View.OnClickListener
-       //private val listener: UsersAdapter.UserItemListener
-   private val itemBinding = ItemUserBinding.bind(itemView)
-
+    private val listener: UsersAdapterPager.UserItemListener
+) : RecyclerView.ViewHolder(
+    LayoutInflater.from(parent.context)
+        .inflate(R.layout.item_user, parent, false)
+), View.OnClickListener {
+    private val itemBinding = ItemUserBinding.bind(itemView)
     private var user: User? = null
 
     init {
-        //itemBinding.root.setOnClickListener(this)
+        itemBinding.root.setOnClickListener(this)
     }
 
     @SuppressLint("SetTextI18n")
     fun bind(item: User?) {
         user = item
         itemBinding.username.text = item?.login
-        itemBinding.details.text = "details"
+        itemBinding.details.text = item?.notes
         Glide.with(itemBinding.root)
             .load(item?.avatarUrl)
+            .placeholder(R.drawable.placeholder_image)
             .transform(CircleCrop())
             .into(itemBinding.avatar)
     }
 
-//    override fun onClick(v: View?) {
-//        listener.onClickedUser(user.id)
-//    }
+    override fun onClick(v: View?) {
+        user?.let { listener.onClickedUser(it.id) }
+    }
 }
