@@ -65,7 +65,9 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
     private fun setupObservers() {
         lifecycleScope.launch {
             mainViewModel.getUsers().collectLatest {
-                adapter.submitData(it)
+                it?.let {
+                    adapter.submitData(it)
+                }
             }
         }
     }

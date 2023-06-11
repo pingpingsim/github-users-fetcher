@@ -13,6 +13,9 @@ interface UserDao {
 //    @Query("SELECT * FROM users")
 //    fun getAllUsers(): LiveData<List<User>>
 
+    @Query("UPDATE users SET notes = :notes WHERE id = :id")
+    suspend fun updateUserNotes(notes: String, id: Int)
+
     @Query("SELECT * FROM users WHERE id = :id")
     fun getUser(id: Int): LiveData<User>
 

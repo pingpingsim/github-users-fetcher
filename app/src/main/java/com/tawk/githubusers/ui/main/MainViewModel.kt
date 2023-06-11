@@ -1,6 +1,7 @@
 package com.tawk.githubusers.ui.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,7 +11,9 @@ import com.tawk.githubusers.data.local.UserDatabase
 import com.tawk.githubusers.data.remote.UserApiService
 import com.tawk.githubusers.data.repository.UserRemoteMediator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val PAGE_SIZE = 20
@@ -21,7 +24,6 @@ class MainViewModel @Inject constructor(
     private val database: UserDatabase,
 ) :
     ViewModel() {
-
 
     /**
      * A PagingSource still loads the data; but when the paged data is exhausted, the Paging library triggers the RemoteMediator to load new data from the network source.

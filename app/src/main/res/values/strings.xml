@@ -8,6 +8,7 @@
     <string name="title_blog">Blog: %1$s</string>
     <string name="title_notes">Notes</string>
     <string name="btn_label_save">Save</string>
+    <string name="msg_save_successful">Save Successful</string>
 
 
 </resources>
