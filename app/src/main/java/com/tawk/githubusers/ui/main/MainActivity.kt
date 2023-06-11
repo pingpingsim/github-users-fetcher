@@ -1,13 +1,14 @@
 package com.tawk.githubusers.ui.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tawk.githubusers.databinding.ActivityMainBinding
+import com.tawk.githubusers.ui.details.DetailsActivity
 import com.tawk.githubusers.ui.main.adapter.UserLoadStateAdapter
 import com.tawk.githubusers.ui.main.adapter.UsersAdapterPager
 import com.tawk.githubusers.utils.NetworkConnectionManager
@@ -69,9 +70,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
     }
 
     override fun onClickedUser(characterId: Int) {
-//        findNavController().navigate(
-//            R.id.action_charactersFragment_to_characterDetailFragment,
-//            bundleOf("id" to characterId)
-//        )
+        val intent = Intent(this, DetailsActivity::class.java)
+        startActivity(intent)
     }
 }
