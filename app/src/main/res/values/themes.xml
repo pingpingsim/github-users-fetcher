@@ -23,4 +23,16 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/black</item>
+        <item name="titleCentered">true</item>
+        <item name="titleTextAppearance">@style/MyTextAppearanceToolbarStyle</item>
+    </style>
+
+    <style name="MyTextAppearanceToolbarStyle" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/euclidcircular</item>
+        <item name="fontFamily">@font/euclidcircular</item>
+        <item name="android:textSize">30sp</item>
+    </style>
 </resources>

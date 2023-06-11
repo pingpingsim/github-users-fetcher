@@ -1,12 +1,15 @@
 package com.tawk.githubusers.data.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "users")
-data class User(
+data class User (
     @PrimaryKey(autoGenerate = false)
     @field:SerializedName("id")
     val id: Int,
@@ -63,4 +66,4 @@ data class User(
     val isSiteAdmin: Boolean,
     @ColumnInfo(name = "notes")
     val notes: String?,
-)
+): Parcelable

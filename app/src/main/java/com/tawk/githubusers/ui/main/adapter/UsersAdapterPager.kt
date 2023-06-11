@@ -16,7 +16,7 @@ import com.tawk.githubusers.databinding.ItemUserBinding
 class UsersAdapterPager(private val listener: UserItemListener) :
     PagingDataAdapter<User, UserViewHolder>(REPO_COMPARATOR) {
     interface UserItemListener {
-        fun onClickedUser(userId: Int)
+        fun onClickedUser(user: User)
     }
 
     companion object {
@@ -61,12 +61,13 @@ class UserViewHolder(
         itemBinding.imgNotes.visibility = if (item?.notes != null) View.VISIBLE else View.GONE
         Glide.with(itemBinding.root)
             .load(item?.avatarUrl)
+            .centerCrop()
             .placeholder(R.drawable.placeholder_image)
             .transform(CircleCrop())
             .into(itemBinding.avatar)
     }
 
     override fun onClick(v: View?) {
-        user?.let { listener.onClickedUser(it.id) }
+        user?.let { listener.onClickedUser(it) }
     }
 }

@@ -26,7 +26,6 @@
         </activity>
 
         <activity
-            android:theme="@style/Theme.Default"
             android:name=".ui.details.DetailsActivity"/>
     </application>
 

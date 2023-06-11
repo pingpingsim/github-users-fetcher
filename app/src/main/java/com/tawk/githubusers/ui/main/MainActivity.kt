@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tawk.githubusers.data.entities.User
 import com.tawk.githubusers.databinding.ActivityMainBinding
 import com.tawk.githubusers.ui.details.DetailsActivity
 import com.tawk.githubusers.ui.main.adapter.UserLoadStateAdapter
@@ -69,8 +70,9 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         }
     }
 
-    override fun onClickedUser(characterId: Int) {
+    override fun onClickedUser(user: User) {
         val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra("user", user)
         startActivity(intent)
     }
 }
