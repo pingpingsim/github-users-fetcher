@@ -7,12 +7,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.tawk.githubusers.R
 import com.tawk.githubusers.data.entities.User
 import com.tawk.githubusers.databinding.ActivityDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -28,9 +26,28 @@ class DetailsActivity : AppCompatActivity() {
 
         initToolbar()
         loadUserInfo()
+
+        loadFollowingFollowersCount()
     }
 
-    fun initToolbar() {
+    private fun loadFollowingFollowersCount() {
+        user?.let { detailsViewModel.getUserFollowing(it.login) }
+
+        detailsViewModel.followingList.observe(this) { response ->
+            response?.let {
+                binding.txtFollowing.text = resources.getString(R.string.title_following, it.size)
+                user?.let { detailsViewModel.getUserFollowers(it.login) }
+            }
+        }
+
+        detailsViewModel.followerList.observe(this) { response ->
+            response?.let {
+                binding.txtFollowers.text = resources.getString(R.string.title_followers, it.size)
+            }
+        }
+    }
+
+    private fun initToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { finish() }
@@ -43,7 +60,7 @@ class DetailsActivity : AppCompatActivity() {
         binding.toolbar.setTitle(user?.login)
     }
 
-    fun loadUserInfo() {
+    private fun loadUserInfo() {
         Glide.with(binding.root)
             .load(user?.avatarUrl)
             .centerCrop()
@@ -51,10 +68,10 @@ class DetailsActivity : AppCompatActivity() {
             .into(binding.imgCover)
 
         binding.txtFollowers.setText(
-            getResources().getString(R.string.title_followers, 123)
+            getResources().getString(R.string.title_followers, 0)
         )
         binding.txtFollowing.setText(
-            getResources().getString(R.string.title_following, 89)
+            getResources().getString(R.string.title_following, 0)
         )
 
         binding.txtUsername.setText(
@@ -84,10 +101,8 @@ class DetailsActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     )
                         .show()
-
                 }
             }
         }
-
     }
 }

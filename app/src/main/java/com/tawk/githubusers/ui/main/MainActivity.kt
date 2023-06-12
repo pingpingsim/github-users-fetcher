@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         networkConnectionManager.observe(this) { isConnected ->
             when (isConnected) {
                 true -> {
-                    Snackbar.make(binding.root, resources.getString(R.string.msg_active_connection), Snackbar.LENGTH_SHORT).show()
+                    //Snackbar.make(binding.root, resources.getString(R.string.msg_active_connection), Snackbar.LENGTH_SHORT).show()
                 }
                 false -> {Snackbar.make(binding.root, resources.getString(R.string.msg_offline_mode), Snackbar.LENGTH_SHORT).show()
                 }
