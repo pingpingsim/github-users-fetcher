@@ -69,6 +69,8 @@ class DetailsActivity : AppCompatActivity() {
             getResources().getString(R.string.title_blog, user?.url)
         )
 
+        binding.editTextNotes.setText(user?.notes)
+
         binding.btnSave.setOnClickListener {
             lifecycleScope.launch {
                 user?.id?.let {
@@ -76,7 +78,11 @@ class DetailsActivity : AppCompatActivity() {
                         binding.editTextNotes.text.toString(),
                         it
                     )
-                    Toast.makeText(this@DetailsActivity, resources.getString(R.string.msg_save_successful), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@DetailsActivity,
+                        resources.getString(R.string.msg_save_successful),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
 
                 }

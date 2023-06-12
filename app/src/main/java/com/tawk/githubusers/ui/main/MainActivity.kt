@@ -7,6 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.tawk.githubusers.R
 import com.tawk.githubusers.data.entities.User
 import com.tawk.githubusers.databinding.ActivityMainBinding
 import com.tawk.githubusers.ui.details.DetailsActivity
@@ -30,29 +32,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         setContentView(binding.root)
         setupRecyclerView()
         setupObservers()
-
-        networkConnectionManager = NetworkConnectionManager(application)
-        networkConnectionManager.observe(this, { isConnected ->
-            when (isConnected) {
-                true -> {//show indicator
-                    binding.rvUsers.visibility = View.VISIBLE
-                    binding.emptyDataView.visibility = View.GONE
-
-                    if (adapter.itemCount == 0) {
-                        adapter.refresh()
-                    }
-                }
-                false -> {//show indicator
-//                    if (adapter.itemCount == 0) {//show empty list view with retry
-//                        binding.emptyDataView.visibility = View.VISIBLE
-//                        binding.rvUsers.visibility = View.GONE
-//                        binding.btnRetry.setOnClickListener(View.OnClickListener { view ->
-//                            adapter.refresh()
-//                        })
-//                    }
-                }
-            }
-        })
+        setupNetworkConnectionObserver()
     }
 
     private fun setupRecyclerView() {
@@ -65,8 +45,19 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
     private fun setupObservers() {
         lifecycleScope.launch {
             mainViewModel.getUsers().collectLatest {
-                it?.let {
-                    adapter.submitData(it)
+                adapter.submitData(it)
+            }
+        }
+    }
+
+    private fun setupNetworkConnectionObserver() {
+        networkConnectionManager = NetworkConnectionManager(application)
+        networkConnectionManager.observe(this) { isConnected ->
+            when (isConnected) {
+                true -> {
+                    Snackbar.make(binding.root, resources.getString(R.string.msg_active_connection), Snackbar.LENGTH_SHORT).show()
+                }
+                false -> {Snackbar.make(binding.root, resources.getString(R.string.msg_offline_mode), Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

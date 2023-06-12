@@ -65,9 +65,9 @@ class NetworkConnectionManager(private val connectivityManager: ConnectivityMana
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 .build(), networkCallback
         )
-        if (connectivityManager.activeNetwork == null) {
-            postValue(false)
-        }
+//        if (connectivityManager.activeNetwork == null) {
+//            postValue(false)
+//        }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

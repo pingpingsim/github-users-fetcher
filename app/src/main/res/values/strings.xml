@@ -9,6 +9,7 @@
     <string name="title_notes">Notes</string>
     <string name="btn_label_save">Save</string>
     <string name="msg_save_successful">Save Successful</string>
-
+    <string name="msg_active_connection">Active connection</string>
+    <string name="msg_offline_mode">You\'re currently on offline mode</string>
 
 </resources>

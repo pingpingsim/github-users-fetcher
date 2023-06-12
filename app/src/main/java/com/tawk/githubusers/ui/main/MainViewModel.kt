@@ -36,12 +36,10 @@ class MainViewModel @Inject constructor(
         Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = 10,
-                initialLoadSize = PAGE_SIZE, // How many items you want to load initially
+                //prefetchDistance = 10,
+                initialLoadSize = PAGE_SIZE,
             ),
             pagingSourceFactory = {
-                // The pagingSourceFactory lambda should always return a brand new PagingSource
-                // when invoked as PagingSource instances are not reusable.
                 database.userDao().getAllUsersPagingSource()
             },
             remoteMediator = UserRemoteMediator(

@@ -10,8 +10,8 @@ import com.tawk.githubusers.data.entities.User
 
 @Dao
 interface UserDao {
-//    @Query("SELECT * FROM users")
-//    fun getAllUsers(): LiveData<List<User>>
+    @Query("SELECT COUNT(id) FROM users")
+    suspend fun getCount():Int
 
     @Query("UPDATE users SET notes = :notes WHERE id = :id")
     suspend fun updateUserNotes(notes: String, id: Int)
