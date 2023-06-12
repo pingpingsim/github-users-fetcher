@@ -27,18 +27,22 @@ class DetailsActivity : AppCompatActivity() {
         initToolbar()
         loadUserInfo()
 
-        loadFollowingFollowersCount()
+        //loadFollowingCount()
+        //loadFollowersCount()
     }
 
-    private fun loadFollowingFollowersCount() {
+    private fun loadFollowingCount() {
         user?.let { detailsViewModel.getUserFollowing(it.login) }
 
         detailsViewModel.followingList.observe(this) { response ->
             response?.let {
                 binding.txtFollowing.text = resources.getString(R.string.title_following, it.size)
-                user?.let { detailsViewModel.getUserFollowers(it.login) }
             }
         }
+    }
+
+    private fun loadFollowersCount() {
+        user?.let { detailsViewModel.getUserFollowers(it.login) }
 
         detailsViewModel.followerList.observe(this) { response ->
             response?.let {
