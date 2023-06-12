@@ -2,9 +2,9 @@ package com.tawk.githubusers.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         setupRecyclerView()
         setupObservers()
         setupNetworkConnectionObserver()
+        initSearchView()
     }
 
     private fun setupRecyclerView() {
@@ -57,10 +58,27 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
                 true -> {
                     //Snackbar.make(binding.root, resources.getString(R.string.msg_active_connection), Snackbar.LENGTH_SHORT).show()
                 }
-                false -> {Snackbar.make(binding.root, resources.getString(R.string.msg_offline_mode), Snackbar.LENGTH_SHORT).show()
+                false -> {
+                    Snackbar.make(
+                        binding.root,
+                        resources.getString(R.string.msg_offline_mode),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
+    }
+
+    private fun initSearchView() {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
     }
 
     override fun onClickedUser(user: User) {
