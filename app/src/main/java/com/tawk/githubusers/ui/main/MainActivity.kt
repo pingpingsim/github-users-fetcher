@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.root)
         setupRecyclerView()
-        setupObservers()
+        searchAllUsers()
         setupNetworkConnectionObserver()
         initSearchView()
     }
@@ -43,9 +43,17 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
             adapter.withLoadStateFooter(footer = UserLoadStateAdapter { adapter.retry() })
     }
 
-    private fun setupObservers() {
+    private fun searchAllUsers() {
         lifecycleScope.launch {
-            mainViewModel.getUsers().collectLatest {
+            mainViewModel.getAllUsers().collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
+
+    private fun filterUsers(filter: String) {
+        lifecycleScope.launch {
+            mainViewModel.getAllFilteredUsers(filter).collectLatest {
                 adapter.submitData(it)
             }
         }
@@ -70,12 +78,22 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
     }
 
     private fun initSearchView() {
+        binding.searchBar.isFocusable = false;
+        binding.searchBar.isIconified = false;
+        binding.searchBar.clearFocus();
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                if (!query.isNullOrEmpty()) {
+                    binding.rvUsers.scrollToPosition(0)
+                    filterUsers(query.trim())
+                }
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    searchAllUsers()
+                }
                 return false
             }
         })

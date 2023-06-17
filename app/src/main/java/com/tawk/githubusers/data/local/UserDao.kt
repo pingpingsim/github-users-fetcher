@@ -22,6 +22,9 @@ interface UserDao {
     @Query("SELECT * FROM users")
     fun getAllUsersPagingSource(): PagingSource<Int, User>
 
+    @Query("SELECT * FROM users where notes LIKE '%' || :query || '%' or login LIKE '%' || :query || '%' ")
+    fun getFilteredUsersPagingSource(query: String): PagingSource<Int, User>
+
     @Query("DELETE FROM users")
     suspend fun clearAll()
 

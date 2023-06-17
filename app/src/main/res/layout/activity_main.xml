@@ -29,14 +29,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/layout_search_bar_border"
+        app:closeIcon="@null"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:queryHint="@string/search_hint"
-        app:layout_constraintTop_toTopOf="parent" >
-        <requestFocus />
-
-    </androidx.appcompat.widget.SearchView>
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/search_hint" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"
