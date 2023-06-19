@@ -12,5 +12,6 @@
     <string name="msg_active_connection">Active connection</string>
     <string name="msg_offline_mode">You\'re currently on offline mode</string>
     <string name="search_hint">Search</string>
+    <string name="msg_no_record">No records found</string>
 
 </resources>

@@ -2,10 +2,14 @@ package com.tawk.githubusers.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.tawk.githubusers.R
@@ -41,6 +45,19 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter =
             adapter.withLoadStateFooter(footer = UserLoadStateAdapter { adapter.retry() })
+        adapter.addLoadStateListener { updateUiOnNewLoadSate(it) }
+        binding.btnRetry.setOnClickListener(View.OnClickListener { view ->
+            adapter.retry()
+        })
+    }
+
+    private fun updateUiOnNewLoadSate(loadState: CombinedLoadStates) {
+        val displayEmptySearch =
+            loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && adapter.itemCount == 0
+        binding.emptyDataState.root.isVisible = displayEmptySearch
+        binding.rvUsers.isVisible = !displayEmptySearch && (loadState.refresh !is LoadState.Error)
+        binding.progressState.isVisible = loadState.refresh is LoadState.Loading
+        binding.errorState.isVisible = loadState.refresh is LoadState.Error
     }
 
     private fun searchAllUsers() {
@@ -59,6 +76,7 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
         }
     }
 
+    // TODO
     private fun setupNetworkConnectionObserver() {
         networkConnectionManager = NetworkConnectionManager(application)
         networkConnectionManager.observe(this) { isConnected ->
@@ -67,11 +85,11 @@ class MainActivity : AppCompatActivity(), UsersAdapterPager.UserItemListener {
                     //Snackbar.make(binding.root, resources.getString(R.string.msg_active_connection), Snackbar.LENGTH_SHORT).show()
                 }
                 false -> {
-                    Snackbar.make(
-                        binding.root,
-                        resources.getString(R.string.msg_offline_mode),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+//                    Snackbar.make(
+//                        binding.root,
+//                        resources.getString(R.string.msg_offline_mode),
+//                        Snackbar.LENGTH_SHORT
+//                    ).show()
                 }
             }
         }
