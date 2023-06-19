@@ -11,6 +11,11 @@ interface UserApiService {
         @Query("since") userIdStartIndex: Int?
     ): List<User>
 
+    @GET("users/{username}")
+    suspend fun getUserProfile(
+        @Path("username") username: String,
+    ): User
+
     @GET("users/{username}/followers")
     suspend fun getFollowers(
         @Path("username") username: String,

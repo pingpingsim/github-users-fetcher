@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "users")
-data class User (
+data class User(
     @PrimaryKey(autoGenerate = false)
     @field:SerializedName("id")
     val id: Int,
@@ -66,4 +66,29 @@ data class User (
     val isSiteAdmin: Boolean,
     @ColumnInfo(name = "notes")
     val notes: String?,
-): Parcelable
+
+    @ColumnInfo(name = "followers")
+    @field:SerializedName("followers")
+    val followers: Long,
+    @ColumnInfo(name = "following")
+    @field:SerializedName("following")
+    val following: Long,
+    @ColumnInfo(name = "name")
+    @field:SerializedName("name")
+    val name: String,
+    @ColumnInfo(name = "company")
+    @field:SerializedName("company")
+    val company: String,
+    @ColumnInfo(name = "blog")
+    @field:SerializedName("blog")
+    val blog: String,
+    @ColumnInfo(name = "location")
+    @field:SerializedName("location")
+    val location: String,
+    @ColumnInfo(name = "email")
+    @field:SerializedName("email")
+    val email: String,
+    @ColumnInfo(name = "bio")
+    @field:SerializedName("bio")
+    val bio: String,
+) : Parcelable
