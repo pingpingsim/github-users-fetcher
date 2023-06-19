@@ -11,8 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.tawk.githubusers.R
 import com.tawk.githubusers.data.entities.User
 import com.tawk.githubusers.databinding.ActivityMainBinding
 import com.tawk.githubusers.ui.details.DetailsActivity
