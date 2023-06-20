@@ -68,6 +68,8 @@ class UserRemoteMediator(
         } catch (e: HttpException) {
             MediatorResult.Error(e)
         } catch (e: Exception) {
+            e.printStackTrace()
+
             MediatorResult.Error(e)
         }
     }

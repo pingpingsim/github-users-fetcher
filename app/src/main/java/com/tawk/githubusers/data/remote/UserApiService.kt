@@ -1,6 +1,7 @@
 package com.tawk.githubusers.data.remote
 
 import com.tawk.githubusers.data.entities.User
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -14,7 +15,7 @@ interface UserApiService {
     @GET("users/{username}")
     suspend fun getUserProfile(
         @Path("username") username: String,
-    ): User
+    ): Response<User>
 
     @GET("users/{username}/followers")
     suspend fun getFollowers(

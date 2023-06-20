@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.tawk.githubusers.R
@@ -24,30 +25,49 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.root)
 
+        initUser()
         initToolbar()
-        loadUserInfo()
+        displayUserInfo()
 
-        //loadFollowingCount()
-        //loadFollowersCount()
+        loadRemoteUserProfile()
     }
 
-    private fun loadFollowingCount() {
-        user?.let { detailsViewModel.getUserFollowing(it.login) }
-
-        detailsViewModel.followingList.observe(this) { response ->
-            response?.let {
-                binding.txtFollowing.text = resources.getString(R.string.title_following, it.size)
-            }
+    private fun loadRemoteUserProfile() {
+        user?.let {
+            detailsViewModel.getUserProfile(it.login)
+            registerObservers()
         }
     }
 
-    private fun loadFollowersCount() {
-        user?.let { detailsViewModel.getUserFollowers(it.login) }
+    private fun registerObservers() {
 
-        detailsViewModel.followerList.observe(this) { response ->
-            response?.let {
-                binding.txtFollowers.text = resources.getString(R.string.title_followers, it.size)
+        detailsViewModel.usersSuccessLiveData.observe(this, Observer { user ->
+            //if it is not null then we will display all users
+            user?.let {
+                detailsViewModel.saveUserProfile(it)
+                binding.txtFollowers.text =
+                    resources.getString(R.string.title_followers, it.followers)
+                binding.txtFollowing.text =
+                    resources.getString(R.string.title_following, it.following)
+                binding.txtCompany.text =
+                    getResources().getString(R.string.title_company, it.company)
+                binding.txtUrl.text =
+                    getResources().getString(R.string.title_blog, it.blog)
             }
+        })
+
+        detailsViewModel.usersFailureLiveData.observe(this, Observer { isFailed ->
+            isFailed?.let {
+
+            }
+        })
+    }
+
+    private fun initUser() {
+        user = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("user", User::class.java)
+        } else {
+            intent.getParcelableExtra<User>("user")
         }
     }
 
@@ -55,42 +75,37 @@ class DetailsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { finish() }
-
-        user = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("user", User::class.java)
-        } else {
-            intent.getParcelableExtra<User>("user")
-        }
         binding.toolbar.setTitle(user?.login)
     }
 
-    private fun loadUserInfo() {
+    private fun displayUserInfo() {
         Glide.with(binding.root)
             .load(user?.avatarUrl)
             .centerCrop()
             .placeholder(R.drawable.placeholder_image)
             .into(binding.imgCover)
 
-        binding.txtFollowers.setText(
-            getResources().getString(R.string.title_followers, 0)
-        )
-        binding.txtFollowing.setText(
-            getResources().getString(R.string.title_following, 0)
-        )
+        user?.let {
+            binding.txtFollowers.setText(
+                getResources().getString(R.string.title_followers, it.followers)
+            )
+            binding.txtFollowing.setText(
+                getResources().getString(R.string.title_following, it.following)
+            )
+            binding.txtUsername.setText(
+                getResources().getString(R.string.title_name, it.login)
+            )
 
-        binding.txtUsername.setText(
-            getResources().getString(R.string.title_name, user?.login)
-        )
+            binding.txtCompany.setText(
+                getResources().getString(R.string.title_company, it.company)
+            )
 
-        binding.txtCompany.setText(
-            getResources().getString(R.string.title_company, "-")
-        )
+            binding.txtUrl.setText(
+                getResources().getString(R.string.title_blog, it.blog)
+            )
 
-        binding.txtUrl.setText(
-            getResources().getString(R.string.title_blog, user?.url)
-        )
-
-        binding.editTextNotes.setText(user?.notes)
+            binding.editTextNotes.setText(it.notes)
+        }
 
         binding.btnSave.setOnClickListener {
             lifecycleScope.launch {

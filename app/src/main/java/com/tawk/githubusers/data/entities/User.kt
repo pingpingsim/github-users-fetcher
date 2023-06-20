@@ -75,20 +75,20 @@ data class User(
     val following: Long,
     @ColumnInfo(name = "name")
     @field:SerializedName("name")
-    val name: String,
+    val name: String?,
     @ColumnInfo(name = "company")
     @field:SerializedName("company")
-    val company: String,
+    val company: String?,
     @ColumnInfo(name = "blog")
     @field:SerializedName("blog")
-    val blog: String,
+    val blog: String?,
     @ColumnInfo(name = "location")
     @field:SerializedName("location")
-    val location: String,
+    val location: String?,
     @ColumnInfo(name = "email")
     @field:SerializedName("email")
-    val email: String,
+    val email: String?,
     @ColumnInfo(name = "bio")
     @field:SerializedName("bio")
-    val bio: String,
+    val bio: String?,
 ) : Parcelable
